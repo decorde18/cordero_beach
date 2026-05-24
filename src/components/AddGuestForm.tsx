@@ -139,7 +139,7 @@ export default function AddGuestForm() {
 
         <div className="mt-4 bg-primary/10 border border-primary/20 rounded-xl p-3 text-sm">
           <p className="font-bold text-primary mb-1">💡 Always Accepted:</p>
-          <p className="opacity-80">Beer, Ice, Tequila, Rum Margarita/ Piña Colada Mix</p>
+          <p className="opacity-80">Ice, soft drink cans, Beer, Margarita/ Piña Colada Mix,Tequila, Rum </p>
         </div>
       </div>
 
