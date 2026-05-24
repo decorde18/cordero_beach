@@ -38,7 +38,10 @@ export default async function AdminPage() {
       </div>
 
       <div className="glass-panel rounded-3xl p-6 md:p-8">
-        <form action={updateSettings} className="space-y-6">
+        <form action={async (formData) => {
+          'use server';
+          await updateSettings(formData);
+        }} className="space-y-6">
           
           <div>
             <label htmlFor="date" className="block text-sm font-medium mb-1 opacity-80">
