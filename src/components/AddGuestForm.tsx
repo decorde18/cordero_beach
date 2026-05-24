@@ -25,52 +25,104 @@ export default function AddGuestForm() {
 
   return (
     <form ref={formRef} action={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium mb-1 opacity-80">
-          Your Name
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          placeholder="e.g. Maverick"
-          className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-2">
+          <label htmlFor="name" className="block text-sm font-medium mb-1 opacity-80">
+            Your Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            placeholder="e.g. Maverick"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="party_size" className="block text-sm font-medium mb-1 opacity-80">
+            Total People
+          </label>
+          <input
+            type="number"
+            id="party_size"
+            name="party_size"
+            min="1"
+            defaultValue="1"
+            required
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="eta" className="block text-sm font-medium mb-1 opacity-80">
+            ETA (Approx)
+          </label>
+          <input
+            type="text"
+            id="eta"
+            name="eta"
+            placeholder="e.g. 2:00 PM"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="bringing" className="block text-sm font-medium mb-1 opacity-80">
-          What are you bringing?
-        </label>
-        <input
-          type="text"
-          id="bringing"
-          name="bringing"
-          required
-          placeholder="e.g. Volleyball & Chips"
-          className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-        />
-      </div>
+      <div className="pt-2 border-t border-white/10 space-y-3">
+        <h4 className="text-sm font-bold uppercase text-primary tracking-wider">What are you bringing? (Optional)</h4>
+        
+        <div>
+          <label htmlFor="main_dish" className="block text-xs font-medium mb-1 opacity-80">
+            Main Dish
+          </label>
+          <input
+            type="text"
+            id="main_dish"
+            name="main_dish"
+            placeholder="e.g. Brisket, Veggie Burgers"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
 
-      <div>
-        <label htmlFor="category" className="block text-sm font-medium mb-1 opacity-80">
-          Category
-        </label>
-        <select
-          id="category"
-          name="category"
-          required
-          defaultValue="drinks"
-          className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all appearance-none"
-        >
-          <option value="main">Main Dish</option>
-          <option value="sides">Side Dish</option>
-          <option value="apps">Appetizer</option>
-          <option value="drinks">Drinks</option>
-          <option value="dessert">Dessert</option>
-          <option value="other">Other / Supplies</option>
-        </select>
+        <div>
+          <label htmlFor="sides_apps" className="block text-xs font-medium mb-1 opacity-80">
+            Sides / Apps
+          </label>
+          <input
+            type="text"
+            id="sides_apps"
+            name="sides_apps"
+            placeholder="e.g. Chips & Guac, Salad"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="drinks" className="block text-xs font-medium mb-1 opacity-80">
+            Drinks
+          </label>
+          <input
+            type="text"
+            id="drinks"
+            name="drinks"
+            placeholder="e.g. 12-pack Modelo, Sprite"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="dessert" className="block text-xs font-medium mb-1 opacity-80">
+            Dessert
+          </label>
+          <input
+            type="text"
+            id="dessert"
+            name="dessert"
+            placeholder="e.g. Brownies, Watermelon"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
       </div>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -78,7 +130,7 @@ export default function AddGuestForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity disabled:opacity-50 flex justify-center items-center"
+        className="w-full py-3 mt-4 rounded-xl bg-primary text-primary-foreground font-bold hover:opacity-90 transition-opacity disabled:opacity-50 flex justify-center items-center"
       >
         {loading ? (
           <span className="animate-spin h-5 w-5 border-2 border-white/30 border-t-white rounded-full"></span>

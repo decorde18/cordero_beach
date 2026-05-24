@@ -5,14 +5,26 @@ import { revalidatePath } from 'next/cache';
 
 export async function addGuest(formData: FormData) {
   const name = formData.get('name') as string;
-  const bringing = formData.get('bringing') as string;
-  const category = formData.get('category') as string;
+  const eta = formData.get('eta') as string;
+  const party_size = parseInt(formData.get('party_size') as string) || 1;
+  const main_dish = formData.get('main_dish') as string;
+  const sides_apps = formData.get('sides_apps') as string;
+  const drinks = formData.get('drinks') as string;
+  const dessert = formData.get('dessert') as string;
 
-  if (!name || !bringing || !category) return { error: 'Name, item, and category are required.' };
+  if (!name) return { error: 'Name is required.' };
 
   const { error } = await supabase
     .from('guests')
-    .insert([{ name, bringing, category }]);
+    .insert([{ 
+      name, 
+      eta, 
+      party_size, 
+      main_dish, 
+      sides_apps, 
+      drinks, 
+      dessert 
+    }]);
 
   if (error) return { error: error.message };
 

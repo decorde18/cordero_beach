@@ -1,9 +1,9 @@
 import { supabase } from '@/lib/supabase';
 import AddGuestForm from '@/components/AddGuestForm';
-import { Calendar, CheckCircle2, Flame, Beer, User } from 'lucide-react';
+import { Calendar, CheckCircle2, Flame, Beer, Users, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 
-export const revalidate = 0; // Dynamic rendering for latest data
+export const revalidate = 0;
 
 export default async function Home() {
   // Fetch party settings
@@ -23,129 +23,148 @@ export default async function Home() {
   const settings = settingsData || {
     date: new Date().toISOString(),
     active: true,
-    grilling: 'Burgers, Hotdogs, and Veggie Skewers',
-    beers_on_tap: 'Corona, Pacifico, and Local IPA'
+    grilling: 'Burgers & Veggie Skewers',
+    beers_on_tap: 'Corona & Local IPA'
   };
 
   const guests = guestsData || [
-    { id: '1', name: 'Alex', bringing: 'Tortilla Chips & Guac', category: 'apps' },
-    { id: '2', name: 'Jordan', bringing: 'Watermelon & Sprite', category: 'drinks' },
+    { id: '1', name: 'Alex', eta: '1:00 PM', party_size: 2, sides_apps: 'Tortilla Chips & Guac', drinks: 'Sprite' },
+    { id: '2', name: 'Jordan', eta: '2:30 PM', party_size: 1, main_dish: 'Ribs', dessert: 'Watermelon' },
   ];
 
-  const categories = [
-    { id: 'main', label: 'Main Dishes' },
-    { id: 'sides', label: 'Side Dishes' },
-    { id: 'apps', label: 'Appetizers' },
-    { id: 'drinks', label: 'Drinks' },
-    { id: 'dessert', label: 'Desserts' },
-    { id: 'other', label: 'Other / Supplies' },
-  ];
-
-  const groupedGuests = categories.map(c => ({
-    ...c,
-    guests: guests.filter((g: any) => g.category === c.id || (!g.category && c.id === 'other'))
-  })).filter(c => c.guests.length > 0);
+  const totalGuests = guests.reduce((sum: number, g: any) => sum + (g.party_size || 1), 0);
 
   return (
-    <main className="min-h-screen p-4 md:p-8 max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
+    <main className="min-h-screen p-4 md:p-6 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-700">
       
-      {/* Header Section */}
-      <header className="text-center space-y-4 py-8">
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
-          Pool Party Time
-        </h1>
-        <p className="text-lg opacity-80 max-w-xl mx-auto">
-          Add your name to the list and let us know what you're bringing. Can't wait to see you there!
-        </p>
+      {/* Compact Header & Settings Bar */}
+      <header className="flex flex-col lg:flex-row gap-4 items-center justify-between glass-panel rounded-3xl p-4 md:p-6">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
+            Pool Party Time
+          </h1>
+          <p className="text-sm opacity-80 mt-1">
+            RSVP and let us know what you're bringing!
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3 justify-center lg:justify-end">
+          <div className="flex items-center space-x-2 bg-background/50 px-3 py-2 rounded-xl text-sm">
+            <Calendar className="w-4 h-4 text-primary" />
+            <span className="font-medium">{settings.date ? format(new Date(settings.date), 'MMM do @ h:mm a') : 'TBD'}</span>
+          </div>
+          <div className="flex items-center space-x-2 bg-background/50 px-3 py-2 rounded-xl text-sm">
+            <CheckCircle2 className={`w-4 h-4 ${settings.active ? 'text-green-500' : 'text-red-500'}`} />
+            <span className="font-medium">{settings.active ? 'ON' : 'TBD'}</span>
+          </div>
+          {settings.grilling && (
+            <div className="flex items-center space-x-2 bg-background/50 px-3 py-2 rounded-xl text-sm">
+              <Flame className="w-4 h-4 text-orange-500" />
+              <span className="font-medium">{settings.grilling}</span>
+            </div>
+          )}
+          {settings.beers_on_tap && (
+            <div className="flex items-center space-x-2 bg-background/50 px-3 py-2 rounded-xl text-sm">
+              <Beer className="w-4 h-4 text-yellow-500" />
+              <span className="font-medium">{settings.beers_on_tap}</span>
+            </div>
+          )}
+        </div>
       </header>
 
-      {/* Party Details Card */}
-      <section className="glass-panel rounded-3xl p-6 md:p-8 space-y-6">
-        <h2 className="text-2xl font-bold border-b border-white/20 pb-4">The Details</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-primary/10 rounded-full text-primary">
-              <Calendar className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm opacity-70">When</p>
-              <p className="font-semibold text-lg">
-                {settings.date ? format(new Date(settings.date), 'EEEE, MMMM do @ h:mm a') : 'TBD'}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-green-500/10 rounded-full text-green-500">
-              <CheckCircle2 className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm opacity-70">Status</p>
-              <p className="font-semibold text-lg">{settings.active ? 'It is ON! 🌊' : 'Postponed / TBD'}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-orange-500/10 rounded-full text-orange-500">
-              <Flame className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm opacity-70">On the Grill</p>
-              <p className="font-semibold text-lg">{settings.grilling || 'Nothing yet'}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-yellow-500/10 rounded-full text-yellow-500">
-              <Beer className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-sm opacity-70">On Tap</p>
-              <p className="font-semibold text-lg">{settings.beers_on_tap || 'BYOB'}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Guest List & Form Section */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Main Content Area */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Form */}
-        <div className="md:col-span-1 space-y-4">
-          <div className="glass-panel rounded-3xl p-6">
-            <h3 className="text-xl font-bold mb-4">I'm Coming!</h3>
+        {/* Form Section (Smaller width) */}
+        <div className="lg:col-span-4 space-y-4">
+          <div className="glass-panel rounded-3xl p-6 sticky top-6">
+            <h3 className="text-xl font-bold mb-4">RSVP Here</h3>
             <AddGuestForm />
           </div>
         </div>
 
-        {/* List */}
-        <div className="md:col-span-2 glass-panel rounded-3xl p-6 space-y-4">
-          <h3 className="text-xl font-bold flex items-center gap-2">
-            <User className="w-5 h-5 text-primary" />
-            Who's Coming ({guests.length})
-          </h3>
-          <div className="space-y-6 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
-            {guests.length === 0 ? (
-              <p className="opacity-70 italic text-center py-8">No one has RSVP'd yet. Be the first!</p>
-            ) : (
-              groupedGuests.map(group => (
-                <div key={group.id} className="space-y-3">
-                  <h4 className="font-bold text-sm text-primary uppercase tracking-wider">{group.label}</h4>
-                  {group.guests.map((guest: any) => (
-                    <div key={guest.id} className="flex justify-between items-center p-4 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
-                      <div className="font-semibold text-lg">{guest.name}</div>
-                      <div className="text-sm opacity-80 bg-background/50 px-3 py-1 rounded-full">
-                        {guest.bringing}
+        {/* Guest List Cards (Larger width) */}
+        <div className="lg:col-span-8 space-y-4">
+          <div className="glass-panel rounded-3xl p-6">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" />
+                Who's Coming ({totalGuests} people)
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+              {guests.length === 0 ? (
+                <p className="opacity-70 italic col-span-full py-8">No one has RSVP'd yet. Be the first!</p>
+              ) : (
+                guests.map((guest: any) => (
+                  <div key={guest.id} className="bg-black/5 dark:bg-white/5 p-5 rounded-2xl border border-white/10 hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+                    
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h4 className="font-bold text-lg leading-tight">
+                          {guest.name}
+                          {guest.party_size > 1 && <span className="text-sm font-normal opacity-70 ml-1">(+{guest.party_size - 1})</span>}
+                        </h4>
+                        {guest.eta && (
+                          <div className="flex items-center text-xs opacity-70 mt-1">
+                            <Clock className="w-3 h-3 mr-1" />
+                            ETA: {guest.eta}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-              ))
-            )}
+
+                    <div className="space-y-2 mt-4 text-sm">
+                      {guest.main_dish && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-orange-500">🍔</span>
+                          <div>
+                            <span className="font-semibold text-xs uppercase tracking-wider opacity-60 block">Main</span>
+                            {guest.main_dish}
+                          </div>
+                        </div>
+                      )}
+                      {guest.sides_apps && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-green-500">🥗</span>
+                          <div>
+                            <span className="font-semibold text-xs uppercase tracking-wider opacity-60 block">Sides/Apps</span>
+                            {guest.sides_apps}
+                          </div>
+                        </div>
+                      )}
+                      {guest.drinks && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-blue-500">🥤</span>
+                          <div>
+                            <span className="font-semibold text-xs uppercase tracking-wider opacity-60 block">Drinks</span>
+                            {guest.drinks}
+                          </div>
+                        </div>
+                      )}
+                      {guest.dessert && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-pink-500">🧁</span>
+                          <div>
+                            <span className="font-semibold text-xs uppercase tracking-wider opacity-60 block">Dessert</span>
+                            {guest.dessert}
+                          </div>
+                        </div>
+                      )}
+                      {!guest.main_dish && !guest.sides_apps && !guest.drinks && !guest.dessert && (
+                        <div className="text-xs opacity-50 italic">Just bringing the good vibes!</div>
+                      )}
+                    </div>
+
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
 
-      </section>
+      </div>
     </main>
   );
 }
