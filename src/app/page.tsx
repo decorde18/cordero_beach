@@ -40,13 +40,16 @@ export default async function Home() {
       
       {/* Compact Header & Settings Bar */}
       <header className="flex flex-col lg:flex-row gap-4 items-center justify-between glass-panel rounded-3xl p-4 md:p-6">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
-            Pool Party Time
-          </h1>
-          <p className="text-sm opacity-80 mt-1">
-            RSVP and let us know what you're bringing!
-          </p>
+        <div className="flex items-center gap-4">
+          <img src="/CBEACH-coin.png" alt="CBEACH Logo" className="w-16 h-16 object-contain drop-shadow-lg" />
+          <div>
+            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">
+              Pool Party Time
+            </h1>
+            <p className="text-sm opacity-80 mt-1">
+              RSVP and let us know what you're bringing!
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-3 justify-center lg:justify-end">

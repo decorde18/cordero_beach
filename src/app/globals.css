@@ -1,22 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfdfd;
-  --foreground: #09090b;
+  --background: #f8fafc;
+  --foreground: #0f172a;
   
-  --primary: #0ea5e9;
-  --primary-foreground: #ffffff;
+  /* Gold/Coin Primary */
+  --primary: #fbbf24;
+  --primary-foreground: #78350f;
   
   --card: rgba(255, 255, 255, 0.7);
-  --card-foreground: #09090b;
+  --card-foreground: #0f172a;
   
-  --border: #e4e4e7;
+  --border: #e2e8f0;
   
-  --glass: rgba(255, 255, 255, 0.8);
+  --glass: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(255, 255, 255, 0.5);
   
-  --accent: #f0f9ff;
-  --accent-foreground: #0284c7;
+  /* Ocean Blue Accent */
+  --accent: #e0f2fe;
+  --accent-foreground: #0369a1;
 }
 
 @theme inline {
@@ -37,21 +39,23 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #09090b;
-    --foreground: #fafafa;
+    --background: #020617;
+    --foreground: #f8fafc;
     
-    --primary: #38bdf8;
-    --primary-foreground: #022c22;
+    /* Gold/Coin Primary */
+    --primary: #f59e0b;
+    --primary-foreground: #fffbeb;
     
-    --card: rgba(24, 24, 27, 0.7);
-    --card-foreground: #fafafa;
+    --card: rgba(15, 23, 42, 0.7);
+    --card-foreground: #f8fafc;
     
-    --border: #27272a;
+    --border: #1e293b;
     
-    --glass: rgba(24, 24, 27, 0.8);
+    --glass: rgba(15, 23, 42, 0.85);
     --glass-border: rgba(255, 255, 255, 0.1);
     
-    --accent: #1e293b;
+    /* Ocean Blue Accent */
+    --accent: #0c4a6e;
     --accent-foreground: #38bdf8;
   }
 }
@@ -60,18 +64,20 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
-  background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                    radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
-                    radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+  /* Deep Ocean to Tropical Blue in dark mode */
+  background-image: radial-gradient(at 0% 0%, #020617 0, transparent 50%), 
+                    radial-gradient(at 50% 0%, #0ea5e9 0, transparent 50%), 
+                    radial-gradient(at 100% 0%, #f59e0b 0, transparent 50%);
   background-attachment: fixed;
   background-size: cover;
 }
 
 @media (prefers-color-scheme: light) {
   body {
-    background-image: radial-gradient(at 0% 0%, hsla(253,16%,97%,1) 0, transparent 50%), 
-                      radial-gradient(at 50% 0%, hsla(225,100%,90%,0.5) 0, transparent 50%), 
-                      radial-gradient(at 100% 0%, hsla(339,100%,90%,0.5) 0, transparent 50%);
+    /* Sandy beach to clear water in light mode */
+    background-image: radial-gradient(at 0% 0%, #fef3c7 0, transparent 50%), 
+                      radial-gradient(at 50% 0%, #38bdf8 0, transparent 50%), 
+                      radial-gradient(at 100% 0%, #bae6fd 0, transparent 50%);
   }
 }
 
