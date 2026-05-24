@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import AddGuestForm from '@/components/AddGuestForm';
+import MenuSummaryPopup from '@/components/MenuSummaryPopup';
 import { Calendar, CheckCircle2, Flame, Beer, Users, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -91,6 +92,7 @@ export default async function Home() {
                 <Users className="w-5 h-5 text-primary" />
                 Who's Coming ({totalGuests} people)
               </h3>
+              <MenuSummaryPopup guests={guests} />
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
