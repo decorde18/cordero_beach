@@ -7,15 +7,19 @@ import { ArrowLeft, Settings } from 'lucide-react';
 export const revalidate = 0;
 
 export default async function AdminPage() {
-  const { data: settingsData } = await supabase
+  const { data: settingsData, error: settingsError } = await supabase
     .from('party_settings')
     .select('*')
     .eq('id', 1)
     .single();
 
+  if (settingsError) {
+    console.error('Supabase settings fetch error:', settingsError.message);
+  }
+
   const settings = settingsData || {
-    date: new Date().toISOString(),
-    active: true,
+    date: null,
+    active: false,
     grilling: '',
     beers_on_tap: ''
   };

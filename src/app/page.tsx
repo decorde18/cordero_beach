@@ -8,30 +8,34 @@ export const revalidate = 0;
 
 export default async function Home() {
   // Fetch party settings
-  const { data: settingsData } = await supabase
+  const { data: settingsData, error: settingsError } = await supabase
     .from('party_settings')
     .select('*')
     .eq('id', 1)
     .single();
 
+  if (settingsError) {
+    console.error('Supabase settings fetch error:', settingsError.message);
+  }
+
   // Fetch guests
-  const { data: guestsData } = await supabase
+  const { data: guestsData, error: guestsError } = await supabase
     .from('guests')
     .select('*')
     .order('created_at', { ascending: false });
 
-  // Use default mock data if not connected properly yet
+  if (guestsError) {
+    console.error('Supabase guests fetch error:', guestsError.message);
+  }
+
   const settings = settingsData || {
-    date: new Date().toISOString(),
-    active: true,
-    grilling: 'Burgers & Veggie Skewers',
-    beers_on_tap: 'Corona & Local IPA'
+    date: null,
+    active: false,
+    grilling: '',
+    beers_on_tap: ''
   };
 
-  const guests = guestsData || [
-    { id: '1', name: 'Alex', eta: '1:00 PM', party_size: 2, sides_apps: 'Tortilla Chips & Guac', drinks: 'Sprite' },
-    { id: '2', name: 'Jordan', eta: '2:30 PM', party_size: 1, main_dish: 'Ribs', dessert: 'Watermelon' },
-  ];
+  const guests = guestsData || [];
 
   const totalGuests = guests.reduce((sum: number, g: any) => sum + (g.party_size || 1), 0);
 
