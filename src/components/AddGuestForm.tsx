@@ -11,15 +11,15 @@ export default function AddGuestForm() {
   const handleSubmit = async (formData: FormData) => {
     setLoading(true);
     setError(null);
-    
+
     const res = await addGuest(formData);
-    
+
     if (res?.error) {
       setError(res.error);
     } else {
       formRef.current?.reset();
     }
-    
+
     setLoading(false);
   };
 
@@ -71,7 +71,7 @@ export default function AddGuestForm() {
 
       <div className="pt-2 border-t border-white/10 space-y-3">
         <h4 className="text-sm font-bold uppercase text-primary tracking-wider">What are you bringing? (Optional)</h4>
-        
+
         <div>
           <label htmlFor="main_dish" className="block text-xs font-medium mb-1 opacity-80">
             Main Dish
@@ -139,7 +139,7 @@ export default function AddGuestForm() {
 
         <div className="mt-4 bg-primary/10 border border-primary/20 rounded-xl p-3 text-sm">
           <p className="font-bold text-primary mb-1">💡 Always Accepted:</p>
-          <p className="opacity-80">Beer, Ice, Tequila / Piña Colada Mix, Rum</p>
+          <p className="opacity-80">Beer, Ice, Tequila, Rum Margarita/ Piña Colada Mix</p>
         </div>
       </div>
 
