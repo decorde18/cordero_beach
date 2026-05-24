@@ -23,6 +23,7 @@ export default function MenuSummaryPopup({ guests }: { guests: any[] }) {
   const sidesApps = guests.filter(g => g.sides_apps).map(g => ({ name: g.name, item: g.sides_apps }));
   const drinks = guests.filter(g => g.drinks).map(g => ({ name: g.name, item: g.drinks }));
   const desserts = guests.filter(g => g.dessert).map(g => ({ name: g.name, item: g.dessert }));
+  const otherItems = guests.filter(g => g.other_items).map(g => ({ name: g.name, item: g.other_items }));
 
   return (
     <>
@@ -111,6 +112,22 @@ export default function MenuSummaryPopup({ guests }: { guests: any[] }) {
                   {desserts.map((d, i) => (
                     <li key={i} className="bg-white/5 px-4 py-3 rounded-xl text-sm">
                       <span className="font-semibold">{d.name}:</span> {d.item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* Other / Supplies */}
+            <section>
+              <h3 className="text-lg font-bold text-purple-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                🧊 Other / Supplies ({otherItems.length})
+              </h3>
+              {otherItems.length === 0 ? <p className="opacity-50 italic text-sm">None yet.</p> : (
+                <ul className="space-y-2">
+                  {otherItems.map((o, i) => (
+                    <li key={i} className="bg-white/5 px-4 py-3 rounded-xl text-sm">
+                      <span className="font-semibold">{o.name}:</span> {o.item}
                     </li>
                   ))}
                 </ul>

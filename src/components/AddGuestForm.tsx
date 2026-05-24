@@ -123,6 +123,24 @@ export default function AddGuestForm() {
             className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
           />
         </div>
+
+        <div>
+          <label htmlFor="other_items" className="block text-xs font-medium mb-1 opacity-80">
+            Other / Supplies
+          </label>
+          <input
+            type="text"
+            id="other_items"
+            name="other_items"
+            placeholder="e.g. Ice, Cups, Sunscreen"
+            className="w-full px-4 py-2 rounded-xl border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          />
+        </div>
+
+        <div className="mt-4 bg-primary/10 border border-primary/20 rounded-xl p-3 text-sm">
+          <p className="font-bold text-primary mb-1">💡 Always Accepted:</p>
+          <p className="opacity-80">Beer, Ice, Tequila / Piña Colada Mix, Rum</p>
+        </div>
       </div>
 
       {error && <p className="text-red-500 text-sm">{error}</p>}

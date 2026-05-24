@@ -11,6 +11,7 @@ export async function addGuest(formData: FormData) {
   const sides_apps = formData.get('sides_apps') as string;
   const drinks = formData.get('drinks') as string;
   const dessert = formData.get('dessert') as string;
+  const other_items = formData.get('other_items') as string;
 
   if (!name) return { error: 'Name is required.' };
 
@@ -23,7 +24,8 @@ export async function addGuest(formData: FormData) {
       main_dish, 
       sides_apps, 
       drinks, 
-      dessert 
+      dessert,
+      other_items
     }]);
 
   if (error) return { error: error.message };

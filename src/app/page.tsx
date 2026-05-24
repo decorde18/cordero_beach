@@ -161,7 +161,16 @@ export default async function Home() {
                           </div>
                         </div>
                       )}
-                      {!guest.main_dish && !guest.sides_apps && !guest.drinks && !guest.dessert && (
+                      {guest.other_items && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-purple-500">🧊</span>
+                          <div>
+                            <span className="font-semibold text-xs uppercase tracking-wider opacity-60 block">Other/Supplies</span>
+                            {guest.other_items}
+                          </div>
+                        </div>
+                      )}
+                      {!guest.main_dish && !guest.sides_apps && !guest.drinks && !guest.dessert && !guest.other_items && (
                         <div className="text-xs opacity-50 italic">Just bringing the good vibes!</div>
                       )}
                     </div>
