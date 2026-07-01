@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from '@/lib/supabase';
 import AddGuestForm from '@/components/AddGuestForm';
 import MenuSummaryPopup from '@/components/MenuSummaryPopup';
 import { Calendar, CheckCircle2, Flame, Beer, Users, Clock } from 'lucide-react';
@@ -7,19 +7,35 @@ import { format } from 'date-fns';
 export const revalidate = 0;
 
 export default async function Home() {
-  // Fetch party settings
-  const { data: settingsData, error: settingsError } = await supabase
+  const client = getSupabaseClient();
+
+  if (!client) {
+    return (
+      <main className="min-h-screen p-4 md:p-6 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-700">
+        <div className="glass-panel rounded-3xl p-6">
+          <h1 className="text-2xl font-bold">Pool Party Time</h1>
+          <p className="mt-3 text-sm opacity-80">
+            Supabase is not configured yet. Add your NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY values to load the RSVP app.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  // Fetch the latest available event settings so the app can work with more than one event.
+  const { data: settingsData, error: settingsError } = await client
     .from('party_settings')
     .select('*')
-    .eq('id', 1)
-    .single();
+    .order('date', { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   if (settingsError) {
     console.error('Supabase settings fetch error:', settingsError.message);
   }
 
   // Fetch guests
-  const { data: guestsData, error: guestsError } = await supabase
+  const { data: guestsData, error: guestsError } = await client
     .from('guests')
     .select('*')
     .order('created_at', { ascending: false });
@@ -32,10 +48,14 @@ export default async function Home() {
     date: null,
     active: false,
     grilling: '',
-    beers_on_tap: ''
+    beers_on_tap: '',
+    event_name: 'Event 1'
   };
 
-  const guests = guestsData || [];
+  const guests = (guestsData || []).filter((guest: any) => {
+    if (guest.event_id == null) return true;
+    return Number(guest.event_id) === Number(settings.id ?? 1);
+  });
 
   const totalGuests = guests.reduce((sum: number, g: any) => sum + (g.party_size || 1), 0);
 
@@ -51,7 +71,7 @@ export default async function Home() {
               Pool Party Time
             </h1>
             <p className="text-sm opacity-80 mt-1">
-              RSVP and let us know what you're bringing!
+              RSVP and let us know what you're bringing for {settings.event_name || 'this event'}.
             </p>
           </div>
         </div>
@@ -87,7 +107,7 @@ export default async function Home() {
         <div className="lg:col-span-4 space-y-4">
           <div className="glass-panel rounded-3xl p-6 sticky top-6">
             <h3 className="text-xl font-bold mb-4">RSVP Here</h3>
-            <AddGuestForm />
+            <AddGuestForm eventId={Number(settings.id ?? 1)} />
           </div>
         </div>
 
