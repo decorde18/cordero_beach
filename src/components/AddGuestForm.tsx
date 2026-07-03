@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { addGuest } from "@/app/actions";
 
-export default function AddGuestForm() {
+export default function AddGuestForm({ eventId = 1 }: { eventId?: number }) {
   const formRef = useRef<HTMLFormElement>(null);
   const submittingRef = useRef(false);
   const [loading, setLoading] = useState(false);
@@ -43,6 +43,7 @@ export default function AddGuestForm() {
       onSubmit={handleFormSubmit}
       className='space-y-4'
     >
+      <input type='hidden' name='event_id' value={eventId} />
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div className='md:col-span-2'>
           <label
